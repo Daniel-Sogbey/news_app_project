@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../models/category.dart';
-import '../widgets/category_item.dart';
+import '../widgets/category_list.dart';
+import '../widgets/recent_news_list.dart';
 
 class NewsOverviewScreen extends StatefulWidget {
   @override
@@ -42,11 +43,14 @@ class _NewsOverviewScreenState extends State<NewsOverviewScreen> {
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: Colors.white,
-        title: Text(
-          'News',
-          style: TextStyle(
-            color: Colors.black54,
-            fontSize: 25.0,
+        title: Container(
+          margin: EdgeInsets.only(top: 0.0),
+          child: Text(
+            'News',
+            style: TextStyle(
+              color: Colors.black54,
+              fontSize: 25.0,
+            ),
           ),
         ),
         centerTitle: true,
@@ -63,24 +67,15 @@ class _NewsOverviewScreenState extends State<NewsOverviewScreen> {
           ),
         ),
       ),
-      body: Container(
-        margin:
-            EdgeInsets.only(top: 10.0, right: 10.0, left: 10.0, bottom: 10.0),
-        height: 70.0,
-        child: ListView.builder(
-          shrinkWrap: true,
-          scrollDirection: Axis.horizontal,
-          itemCount: categories.length,
-          itemBuilder: (ctx, index) => CategoryItem(
-            title: categories[index].title,
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            child: CategoryList(categories: categories),
           ),
-          // gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          //   crossAxisCount: 5,
-          //   childAspectRatio: 2 / 2,
-          //   crossAxisSpacing: 0,
-          //   mainAxisSpacing: 5,
-          // ),
-        ),
+          Expanded(
+            child: RecentNewsList(),
+          ),
+        ],
       ),
     );
   }
