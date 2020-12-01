@@ -19,6 +19,7 @@ class CategoryItem extends StatelessWidget {
           style: TextStyle(
             color: Colors.grey,
             fontSize: 22.0,
+            fontFamily: 'Quicksand',
           ),
         ),
       ),

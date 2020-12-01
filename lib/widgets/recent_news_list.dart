@@ -36,8 +36,9 @@ class RecentNewsList extends StatelessWidget {
         margin:
             EdgeInsets.only(bottom: 20.0, right: 15.0, left: 15.0, top: 15.0),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(20.0),
+          borderRadius: BorderRadius.circular(30.0),
           child: Card(
+            elevation: 6.0,
             child: Column(
               children: <Widget>[
                 Expanded(
@@ -53,14 +54,32 @@ class RecentNewsList extends StatelessWidget {
                 ),
                 Expanded(
                   child: Container(
-                    color: Colors.black26,
-                    child: Text(
-                      recentNews[index].title,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 25.0,
-                      ),
-                    ),
+                    width: 300,
+                    child: recentNews[index].title.length > 35
+                        ? Container(
+                            color: Colors.black26,
+                            child: Text(
+                              recentNews[index].title.replaceRange(
+                                    35,
+                                    recentNews[index].title.length,
+                                    '...',
+                                  ),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 25.0,
+                              ),
+                            ),
+                          )
+                        : Container(
+                            color: Colors.black26,
+                            child: Text(
+                              recentNews[index].title,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 25.0,
+                              ),
+                            ),
+                          ),
                   ),
                 ),
               ],

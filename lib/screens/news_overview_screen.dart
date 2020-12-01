@@ -35,6 +35,7 @@ class _NewsOverviewScreenState extends State<NewsOverviewScreen> {
   ];
 
   var _isOpen = false;
+  var _showSearchBar = false;
 
   @override
   Widget build(BuildContext context) {
@@ -43,15 +44,36 @@ class _NewsOverviewScreenState extends State<NewsOverviewScreen> {
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: Colors.white,
-        title: Container(
-          margin: EdgeInsets.only(top: 0.0),
-          child: Text(
-            'News',
-            style: TextStyle(
-              color: Colors.black54,
-              fontSize: 25.0,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              margin: EdgeInsets.only(top: 0.0, left: 100),
+              child: Text(
+                'News',
+                style: TextStyle(
+                  color: Colors.black54,
+                  fontSize: 25.0,
+                  fontFamily: 'MajorMonoDisplay',
+                ),
+              ),
             ),
-          ),
+            Container(
+                margin: EdgeInsets.only(top: 0.0),
+                child: IconButton(
+                  onPressed: () {
+                    setState(() {
+                      _showSearchBar = !_showSearchBar;
+                    });
+                    print(_showSearchBar);
+                  },
+                  icon: Icon(
+                    Icons.search,
+                    size: 25,
+                    color: Colors.black54,
+                  ),
+                )),
+          ],
         ),
         centerTitle: true,
         leading: Builder(
@@ -69,10 +91,32 @@ class _NewsOverviewScreenState extends State<NewsOverviewScreen> {
       ),
       body: Column(
         children: <Widget>[
+          _showSearchBar
+              ? Card(
+                  elevation: 6.0,
+                  color: Colors.red,
+                  child: Text('Search Bar'),
+                )
+              : Container(),
           Expanded(
             child: CategoryList(categories: categories),
           ),
           Expanded(
+            child: Container(
+              width: double.infinity,
+              child: Text(
+                'Top headlines across the globe',
+                style: TextStyle(
+                  fontSize: 25.0,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black54,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 4,
             child: RecentNewsList(),
           ),
         ],
