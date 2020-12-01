@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../models/category.dart';
+import '../providers/categories.dart';
 import '../widgets/category_list.dart';
 import '../widgets/recent_news_list.dart';
 
@@ -10,35 +11,12 @@ class NewsOverviewScreen extends StatefulWidget {
 }
 
 class _NewsOverviewScreenState extends State<NewsOverviewScreen> {
-  List<Category> categories = [
-    Category(
-      title: 'Business',
-    ),
-    Category(
-      title: 'Entertainment',
-    ),
-    Category(
-      title: 'Sports',
-    ),
-    Category(
-      title: 'Education',
-    ),
-    Category(
-      title: 'World',
-    ),
-    Category(
-      title: 'Politics',
-    ),
-    Category(
-      title: 'Tech',
-    ),
-  ];
-
   var _isOpen = false;
   var _showSearchBar = false;
 
   @override
   Widget build(BuildContext context) {
+    final categories = Provider.of<Categories>(context).categories;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
