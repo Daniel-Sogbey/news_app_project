@@ -12,7 +12,7 @@ class CategoryItem extends StatelessWidget {
       onTap: () {},
       child: Container(
         height: 30.0,
-        margin: EdgeInsets.all(15.0),
+        margin: EdgeInsets.all(10.0),
         padding: EdgeInsets.all(5.0),
         child: Text(
           title,

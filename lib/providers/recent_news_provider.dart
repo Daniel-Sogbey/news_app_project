@@ -12,20 +12,20 @@ class RecentNewsProvider with ChangeNotifier {
     return [..._recentNews];
   }
 
-  Future<List<RecentNews>> usTopHeadlines() async {
-    const usUrl =
-        'https://newsapi.org/v2/top-headlines?country=us&apiKey=d6d61e8cb2634b43923da78a9a50d230';
-    const ngUrl =
-        'https://newsapi.org/v2/top-headlines?country=ng&apiKey=d6d61e8cb2634b43923da78a9a50d230';
+  Future<List<RecentNews>> usTopHeadlines(String country) async {
+    final url =
+        'https://newsapi.org/v2/top-headlines?country=$country&apiKey=d6d61e8cb2634b43923da78a9a50d230';
+
     try {
-      final usResponse = await http.get(usUrl);
-      // final ngResponse = await http.get(ngUrl);
+      final response = await http.get(url);
 
-      final usRecentNews = json.decode(usResponse.body);
-      // final ngRecentNews = json.decode(usResponse.body);
+      final recentNews = json.decode(response.body);
 
-      for (int i = 0; i < 15; i++) {
-        var newsData = usRecentNews['articles'][i];
+      var newsData = recentNews['articles'][0];
+      print(newsData['source']['name']);
+
+      for (int i = 0; i < 19; i++) {
+        var newsData = recentNews['articles'][i];
 
         _recentNews.add(
           RecentNews(
@@ -35,17 +35,6 @@ class RecentNewsProvider with ChangeNotifier {
           ),
         );
       }
-      // for (int i = 0; i < 5; i++) {
-      //   var newsData = ngRecentNews['articles'][i];
-      //
-      //   _recentNews.add(
-      //     RecentNews(
-      //       source: newsData['source']['name'],
-      //       title: newsData['title'],
-      //       imageUrl: newsData['urlToImage'],
-      //     ),
-      //   );
-      // }
       notifyListeners();
     } catch (error) {
       print(error);

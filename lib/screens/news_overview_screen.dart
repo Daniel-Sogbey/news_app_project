@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/business_news_provider.dart';
 import '../providers/categories.dart';
+import '../widgets/appDrawer.dart';
+import '../widgets/business_news.dart';
 import '../widgets/category_list.dart';
 import '../widgets/recent_news_list.dart';
 
 class NewsOverviewScreen extends StatefulWidget {
+  static const routeName = '/';
   @override
   _NewsOverviewScreenState createState() => _NewsOverviewScreenState();
 }
@@ -15,8 +19,15 @@ class _NewsOverviewScreenState extends State<NewsOverviewScreen> {
   var _showSearchBar = false;
 
   @override
+  void initState() {
+    Provider.of<BusinessNewsProvider>(context, listen: false).getNews();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final categories = Provider.of<Categories>(context).categories;
+    final routeArg = ModalRoute.of(context).settings.arguments as String;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -57,7 +68,7 @@ class _NewsOverviewScreenState extends State<NewsOverviewScreen> {
         leading: Builder(
           builder: (BuildContext context) => IconButton(
             onPressed: () {
-              // Scaffold.of(context).openDrawer();
+              Scaffold.of(context).openDrawer();
             },
             icon: Icon(
               _isOpen ? Icons.close : Icons.menu,
@@ -67,37 +78,63 @@ class _NewsOverviewScreenState extends State<NewsOverviewScreen> {
           ),
         ),
       ),
-      body: Column(
-        children: <Widget>[
-          _showSearchBar
-              ? Card(
-                  elevation: 6.0,
-                  color: Colors.red,
-                  child: Text('Search Bar'),
-                )
-              : Container(),
-          Expanded(
-            child: CategoryList(categories: categories),
-          ),
-          Expanded(
-            child: Container(
-              width: double.infinity,
-              child: Text(
-                'Top headlines across the globe',
-                style: TextStyle(
-                  fontSize: 25.0,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black54,
+      drawer: AppDrawer(),
+      body: Container(
+        child: SingleChildScrollView(
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                _showSearchBar
+                    ? Card(
+                        elevation: 6.0,
+                        color: Colors.red,
+                        child: Text('Search Bar'),
+                      )
+                    : Container(),
+                Expanded(
+                  child: CategoryList(categories: categories),
                 ),
-                textAlign: TextAlign.center,
-              ),
+                Container(
+                  width: double.infinity,
+                  child: Text(
+                    'Top headlines across the globe',
+                    style: TextStyle(
+                      fontSize: 25.0,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black54,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: RecentNewsList(
+                    country: routeArg,
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 20.0),
+                  width: double.infinity,
+                  child: Text(
+                    'Business News',
+                    style: TextStyle(
+                      fontSize: 25.0,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black54,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: BusinessNews(),
+                ),
+              ],
             ),
           ),
-          Expanded(
-            flex: 4,
-            child: RecentNewsList(),
-          ),
-        ],
+        ),
       ),
     );
   }
